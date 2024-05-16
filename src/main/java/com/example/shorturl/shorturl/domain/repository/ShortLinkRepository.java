@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ShortLinkRepository extends JpaRepository<ShortLinkEntity, Long>{
     Optional<ShortLinkEntity> findByOriginalUrl(String originalUrl);
     Page<ShortLinkEntity> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    ShortLinkEntity findByHash(String hash);
 }

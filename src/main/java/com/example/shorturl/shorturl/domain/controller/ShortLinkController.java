@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/short-links")
@@ -52,6 +53,17 @@ public class ShortLinkController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Url 삭제에 실패했습니다.");
+        }
+    }
+
+    @GetMapping("/{hash}")
+    public RedirectView redirect(@PathVariable String hash) {
+        try {
+            String originalUrl = shortLinkService.getOriginalUrlByHash(hash);
+            return new RedirectView(originalUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new RedirectView("/error"); // 리디렉션 실패 시 에러 페이지로 리디렉션
         }
     }
 }

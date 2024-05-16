@@ -71,4 +71,12 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         Page<ShortLinkEntity> shortLinkEntities = shortLinkRepository.findAllByOrderByCreatedAtDesc(pageable);
         return shortLinkEntities.map(ResponseDto::fromEntity);
     }
+
+    public String getOriginalUrlByHash(String hash) {
+        ShortLinkEntity shortLinkEntity = shortLinkRepository.findByHash(hash);
+        if (shortLinkEntity == null || shortLinkEntity.getIsDeleted()) {
+            throw new RuntimeException("URL not found or has been deleted");
+        }
+        return shortLinkEntity.getOriginalUrl();
+    }
 }

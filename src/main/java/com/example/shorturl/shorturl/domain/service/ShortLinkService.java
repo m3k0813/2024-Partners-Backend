@@ -12,4 +12,6 @@ public interface ShortLinkService {
     void deleteShortUrl(String originalUrl);
 
     Page<ResponseDto> getShortUrls(Pageable pageable);
+
+    String getOriginalUrlByHash(String hash);
 }
