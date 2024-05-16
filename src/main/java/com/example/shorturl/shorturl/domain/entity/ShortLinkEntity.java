@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -22,9 +23,9 @@ import java.time.LocalDateTime;
 public class ShortLinkEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "short_link_id", updatable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "short_link_id", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(name = "original_url", nullable = false)
     private String originalUrl;

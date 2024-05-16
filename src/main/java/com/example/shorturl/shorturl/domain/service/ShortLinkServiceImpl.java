@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -35,8 +36,8 @@ public class ShortLinkServiceImpl implements ShortLinkService {
             return ResponseDto.fromEntity(shortLinkEntity.get());
         }
 
-        long id = idCounter.incrementAndGet();
-        String shortLink = Base62.encode(id);
+        UUID id = UUID.randomUUID();
+        String shortLink = Base62.encode(id.getMostSignificantBits() & Long.MAX_VALUE);
 
         ShortLinkEntity newShortLink = new ShortLinkEntity();
         newShortLink.setId(id);
