@@ -43,6 +43,6 @@ public class ShortLinkEntity {
     private Boolean isDeleted = false;
 
     public void setShortUrl(String hash) {
-        this.shortUrl = "http://localhost:8000/short-links/" + hash;
+        this.shortUrl = "http://localhost:8080/short-links/" + hash;
     }
 }

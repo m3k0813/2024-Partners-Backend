@@ -2,7 +2,6 @@ package com.example.shorturl.shorturl.domain.controller;
 
 import com.example.shorturl.shorturl.domain.dto.RequestDto;
 import com.example.shorturl.shorturl.domain.dto.ResponseDto;
-import com.example.shorturl.shorturl.domain.entity.ShortLinkEntity;
 import com.example.shorturl.shorturl.domain.service.ShortLinkService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/short-links")
-public class ShortLinkController {
+public class ShortLinkController implements ShortLinkControllerDocs {
 
     private final ShortLinkService shortLinkService;
 
