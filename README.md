@@ -81,3 +81,91 @@
 
 - [백한결](https://github.com/baekhangyeol) 👾
 - [조희은](https://github.com/kubit2) 👾
+
+---
+
+### 전체 구조
+<img width="387" alt="스크린샷 2024-05-24 오전 1 28 55" src="https://github.com/m3k0813/m3k0813/assets/41982054/52ec7036-018b-4bfb-8df5-7eb4c6636947">
+
+## 1. Shork Link 생성하기
+ </br><img width="706" alt="스크린샷 2024-05-24 오전 1 30 08" src="https://github.com/m3k0813/m3k0813/assets/41982054/1144e718-6010-49b0-8bfd-516ee36b8d35">
+ 
+Shork Link를 생성하기 위해 Controller를 통해 json으로 originalUrl을 requestDto에 담아 Service로 요청을 받는다. 
+
+#### Base62
+
+```
+public class Base62 {
+    private static final String BASE62 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    public static String encode(long value) {
+        StringBuilder sb = new StringBuilder();
+        do {
+            int i = (int) (value % 62);
+            sb.append(BASE62.charAt(i));
+            value /= 62;
+        } while (value > 0);
+        return sb.toString();
+    }
+
+    public static String encode(BigInteger value) {
+        StringBuilder sb = new StringBuilder();
+        while (value.compareTo(BigInteger.ZERO) > 0) {
+            BigInteger[] divmod = value.divideAndRemainder(BigInteger.valueOf(62));
+            sb.append(BASE62.charAt(divmod[1].intValue()));
+            value = divmod[0];
+        }
+        return sb.toString();
+    }
+
+    public static long decode(String value) {
+        long result = 0L;
+        long power = 1L;
+        for (int i = 0; i < value.length(); i++) {
+            result += BASE62.indexOf(value.charAt(i)) * power;
+            power *= 62;
+        }
+        return result;
+    }
+}
+```
+
+</br>
+Service에서 UUID를 통해 고유 식별자를 랜덤으로 생성하고 Base62 알고리즘으로 새로운 해시값을 만들어서 http://localhost:8000/short-links/{hash} 형태로 저장한다.
+</br>
+</br>
+
+#### Postman 결과
+<img width="926" alt="스크린샷 2024-05-24 오전 1 24 09" src="https://github.com/m3k0813/m3k0813/assets/41982054/993b3ba8-e9a5-4a70-aa19-76a99c681404">
+
+</br>
+</br>
+
+### 2. Short Link 리다이렉트
+<img width="916" alt="스크린샷 2024-05-24 오전 1 26 24" src="https://github.com/m3k0813/m3k0813/assets/41982054/2230ec4a-4990-4da3-ba7c-316f93cdf4bf">
+
+</br>
+</br>
+</br>
+
+### 3. Short Links 조회하기
+
+<img width="908" alt="스크린샷 2024-05-24 오전 1 24 39" src="https://github.com/m3k0813/m3k0813/assets/41982054/58d5cc64-4373-41d8-9266-b68b41aee296">
+</br>
+원본 URL, 줄여진 URL, 해시값을 최신 순으로 정렬하여 조회
+</br>
+</br>
+</br>
+
+### 4. Short Link 삭제하기
+<img width="1253" alt="스크린샷 2024-05-24 오전 1 25 41" src="https://github.com/m3k0813/m3k0813/assets/41982054/a27aedc7-3be3-43d3-bb10-f5db065c26ad">
+
+</br>
+deleted 필드를 추가하여 Soft Delete 구현
+</br>
+</br>
+</br>
+
+### Swagger 문서화
+
+<img width="1478" alt="스크린샷 2024-05-24 오전 1 26 48" src="https://github.com/m3k0813/m3k0813/assets/41982054/6cf0fb3a-53a9-423a-991e-11ca40cc02c9">
