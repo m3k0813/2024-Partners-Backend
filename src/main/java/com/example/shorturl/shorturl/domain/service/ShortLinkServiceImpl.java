@@ -76,7 +76,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     public String getOriginalUrlByHash(String hash) {
         ShortLinkEntity shortLinkEntity = shortLinkRepository.findByHash(hash);
         if (shortLinkEntity == null || shortLinkEntity.getIsDeleted()) {
-            throw new RuntimeException("URL not found or has been deleted");
+            throw new RuntimeException("해당 URL이 존재하지 않습니다.");
         }
         return shortLinkEntity.getOriginalUrl();
     }
